@@ -1,0 +1,84 @@
+<!doctype html>
+<html>    
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="js/libs/jquery.mobile-1.4.2/jquery.mobile-1.4.2.min.css">
+        <script src="js/libs/jquery-ui-1.10.4.custom/js/jquery-1.10.2.js"></script>
+        <script src="js/libs/jquery.mobile-1.4.2/jquery.mobile-1.4.2.min.js"></script>
+        <script src="js/libs/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script src="js/libs/jquery.ui.touch-punch.min.js"></script>
+        <script src="js/script.js"></script>
+        <script src="js/libs/jquery.ellipsis.interactive.js"></script>
+        <link href="css/main.css" rel="stylesheet">
+    </head>
+    
+    <body>
+		<form method="post" action="demoform.asp">
+        <div data-role="page" id="note-edit" data-theme="b">
+            <div data-role="panel" id="pushPanel" data-display="push">
+                 <h2>Lesson Notes</h2>
+ 					<a href="#descriptionPopup" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all ui-icon-check ui-btn-icon-left">Lesson Description</a>
+                <div data-role="popup" id="descriptionPopup" class="ui-content" style="min-width:250px;">
+                        <div>
+                            <h3>Lesson Overview</h3>
+                            <label for="lname" class="ui-hidden-accessible">Name:</label>
+                            <input type="text" name="lesson-name" id="lname" placeholder="Name">
+                            <label for="kverses" class="ui-hidden-accessible">Key Verses:</label>
+                            <input type="text" name="key-verses" id="kverses" placeholder="Key Verses">
+                            <label for="tags" class="ui-hidden-accessible">Tag(s):</label>
+                            <input type="text" name="tags" id="tags" placeholder="Search Tags">
+                            <label for="description" class="ui-hidden-accessible">Description:</label>
+                            <textarea name="lesson-description" id="ddescription" rows="10" placeholder="Description"></textarea>
+                        </div>
+                </div> <a href="#myPopup" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all ui-icon-check ui-btn-icon-left">Add Lesson Note</a>
+
+                <div data-role="popup" id="myPopup" class="ui-content" style="min-width:250px;">
+                        <div>
+                             <h3>Note Properties</h3>
+
+                            <label for="eheight" class="ui-hidden-accessible">Note:</label>
+                            <textarea name="lesson-note" id="note" rows="10" placeholder="Note Text"></textarea>
+                            <label for="imp" class="ui-hidden-accessible">Importance</label>
+                            <select id="imp" name="imp-level">
+                                <option value="" disabled>-Choose Importance-</option>
+                                <option value="maj_imp">Major</option>
+                                <option value="min_imp">Minor</option>
+                                <option value="reg_imp">Regular</option>
+                            </select>
+                            <label for="ntype" class="ui-hidden-accessible">Note Type</label>
+                            <select id="ntype" name="note-type">
+                                <option value="" disabled>-Choose Note Type-</option>
+                                <option value="activity">Activity</option>
+                                <option value="general">General</option>
+                                <option value="question">Question</option>
+                                <option value="quote">Quote</option>
+                            </select>
+                            <input type="button" data-inline="true" class="newNoteButton" value="Add Note">
+                        </div>
+                </div> <a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
+
+            </div>
+            <div data-role="header">
+                <p style="margin-left:5px;">Lesson Note Organizer</p>
+                <div data-role="navbar">
+                    <ul>
+                        <li><a data-icon="edit" href="#pushPanel" data-icon="add"></a>
+
+                        </li>
+                        <li><a href="/" data-icon="bars"></a>
+                        </li>
+                        <li><a href="#" data-icon="cloud"></a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div data-role="main" class="ui-content">
+                <div id="chalkboard">
+                    <ul id="sortable"></ul>
+                </div>
+            </div>
+        </div>
+        </form>
+    </body>
+</html>
