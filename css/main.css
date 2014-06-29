@@ -22,11 +22,13 @@
 @media screen and (min-device-width: 768px) and (max-device-width: 1024px){
   /* some CSS here */
 }
-
 /* #### Desktops #### */
 @media screen and (min-width: 1024px){
   /* some CSS here */
 }
+
+[data-role=page]{height: 100% !important; position:relative !important;}
+[data-role=footer]{bottom:0; text-align:center;position:absolute !important; top: auto !important; width:100%;}
 
 .maj_imp {
     border-color: white;
@@ -103,8 +105,6 @@ select option[disabled]:first-child {
     display: none;
 }
 
-
-('.note-default').ellipsis();
 
 #chalkboard {
     overflow: auto;
