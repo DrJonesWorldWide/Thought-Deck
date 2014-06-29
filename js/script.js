@@ -14,8 +14,11 @@ $(document).ready($(function() {
         $('#ntype').val("");
         $('#imp').val("");
         $('#note').val("");
+        $(".note-default").more({length: 100,
+                                 moreText: 'show', lessText: 'hide'});
     });
 }));
+
 
 $(function() {
     $("#sortable").sortable({
@@ -63,13 +66,12 @@ toolboxStorage.indexedDB.open = function() {
     request.onerror = toolboxStorage.indexedDB.onerror;
 };
 
-toolboxStorage.indexedDB.addLesson = function(lessonText, kverses, tags, desc, notes) {
+toolboxStorage.indexedDB.addLesson = function(lessonText, tags, desc, notes) {
     var db = toolboxStorage.indexedDB.db;
     var trans = db.transaction(["lesson"], "readwrite");
     var store = trans.objectStore("lesson");
     var request = store.put({
         "name" : lessonText,
-        "kverses" : kverses,
         "tags" : tags,
         "desc" : desc,
         "notes" : notes,
@@ -123,13 +125,11 @@ toolboxStorage.indexedDB.getLessonItemsByName = function(name)  {
     request.onsuccess = function(event) {
       // Do something with the request.result!
       var lesson = document.getElementById('lname');
-      var kverses = document.getElementById('kverses');
       var tags = document.getElementById('tags');
       var desc = document.getElementById('desc'); 
 
       var notes = [];
       lesson.value = request.result.name;
-      kverses.value = request.result.kverses;
       tags.value = request.result.tags;
       desc.value = request.result.desc;
       notes = JSON.parse(request.result.notes);
@@ -197,7 +197,6 @@ window.addEventListener("DOMContentLoaded", init, false);
 
 function addLesson() {
     var lesson = document.getElementById('lname');
-    var kverses = document.getElementById('kverses');
     var tags = document.getElementById('tags');
     var desc = document.getElementById('desc');        
     
@@ -220,24 +219,21 @@ function addLesson() {
 
     });
     
-    toolboxStorage.indexedDB.addLesson(lesson.value,kverses.value, tags.value, desc.value, JSON.stringify(arNotes));
+    toolboxStorage.indexedDB.addLesson(lesson.value, tags.value, desc.value, JSON.stringify(arNotes));
     
     clearLesson();
 }
 
 function clearLesson() {
     var lesson = document.getElementById('lname');
-    var kverses = document.getElementById('kverses');
     var tags = document.getElementById('tags');
     var desc = document.getElementById('desc');    
  
     $('.li-default').remove();
 
     lesson.value = '';
-    kverses.value = '';
     tags.value = '';
-    desc.value = '';    
-    
+    desc.value = '';       
 }
 
 function newLesson() {
