@@ -89,7 +89,6 @@
   margin-right: 0.25em;
   vertical-align: -0.4em;
 }
-
  
 select option {
     color: black;
@@ -105,6 +104,10 @@ select option[disabled]:first-child {
     display: none;
 }
 
+html body{
+    overflow: hidden;
+    height: 100%;
+}
 
 #chalkboard {
     overflow: auto;

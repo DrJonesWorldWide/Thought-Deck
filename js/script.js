@@ -10,12 +10,13 @@ var $cnt = 1;
 $(document).ready($(function() {
     $('.newNoteButton').on('click', function() {
         $cnt++;
-        $('#sortable').append('<li id="li' + $cnt + '" class="li-default' + ' ' + $('#imp').val() + '"><div id="note' + $cnt + '" class="note-default ' + $('#ntype').val() + '">' + $('#note').val() + '</div></li>');
+        $('#sortable').append('<li id="li' + $cnt + '" class="li-default' + ' ' + $('#imp').val() + '"><div contenteditable id="note' + $cnt + '" class="note-default ' + $('#ntype').val() + '">' + $('#note').val() + '</div></li>');
         $('#ntype').val("");
         $('#imp').val("");
         $('#note').val("");
-        $(".note-default").more({length: 100,
-                                 moreText: 'show', lessText: 'hide'});
+        $(".note-default").more({length: 80,
+                                 moreText: '<span style="text-shadow:none;color:gray;">more</span>',
+                                 lessText: '<span style="text-shadow:none;color:gray;">less</span>'});
     });
 }));
 
@@ -25,6 +26,15 @@ $(function() {
         placeholder : "ui-state-highlight"
     });
     $("#sortable").disableSelection();
+
+    $("#sortable").click(function() {
+        $(this).sortable( {disabled: false})
+               .disableSelection();
+    }).dblclick(function() {
+        $(this).sortable({ disabled: true })
+               .enableSelection();
+    });
+
 });
 
 $(document).ready($(function() {
@@ -138,12 +148,16 @@ toolboxStorage.indexedDB.getLessonItemsByName = function(name)  {
       
       notes.forEach(function(entry) {
         console.log('note:' + entry.noteText);
-        $('#sortable').append('<li id="' + entry.noteId + '" class="' + entry.liClasses + '"><div id="note' + $cnt + '" class="' + entry.noteClasses + '">' + entry.noteText + '</div></li>');
+        $('#sortable').append('<li id="' + entry.noteId + '" class="' + entry.liClasses + '"><div contenteditable id="note' + $cnt + '" class="' + entry.noteClasses + '">' + entry.noteText + '</div></li>');
+        $(".note-default").more({length: 80,
+                                 moreText: '<span style="text-shadow:none;color:gray;">more</span>',
+                                 lessText: '<span style="text-shadow:none;color:gray;">less</span>'});
         
       });
       $.mobile.navigate( "#note-edit", { transition : "slide", info: "info about the #bar hash" });
     };
 };
+
 
 
 function renderLesson(row) {
