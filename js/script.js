@@ -28,6 +28,7 @@ $(function() {
     $("#sortable").disableSelection();
 
     $("#sortable").on("taphold",function(){
+      $('#thought_id').val($(this).attr("id"));  
       $("#fireThougBubble").click();
     //  $.mobile.navigate( "#thoughtBubble", { info: "info about the #bar hash" });
     });
