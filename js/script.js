@@ -8,13 +8,13 @@ $("select:has(option[value=]:first-child)").on('change', function() {
 
 var $cnt = 1;
 $(document).ready($(function() {
-    $('.newNoteButton').on('click', function() {
+    $('.newThoughtButton').on('click', function() {
         $cnt++;
-        $('#sortable').append('<li id="li' + $cnt + '" class="li-default' + ' ' + $('#imp').val() + '"><div contenteditable id="note' + $cnt + '" class="note-default ' + $('#ntype').val() + '">' + $('#note').val() + '</div></li>');
+        $('#sortable').append('<li id="li' + $cnt + '" class="li-default' + ' ' + $('#imp').val() + '"><div id="thought' + $cnt + '" class="thought-default ' + $('#ntype').val() + '">' + $('#thought').val() + '</div></li>');
         $('#ntype').val("");
         $('#imp').val("");
-        $('#note').val("");
-        $(".note-default").more({length: 80,
+        $('#thought').val("");
+        $(".thought-default").more({length: 80,
                                  moreText: '<span style="text-shadow:none;color:gray;">more</span>',
                                  lessText: '<span style="text-shadow:none;color:gray;">less</span>'});
     });
@@ -27,12 +27,9 @@ $(function() {
     });
     $("#sortable").disableSelection();
 
-    $("#sortable").click(function() {
-        $(this).sortable( {disabled: false})
-               .disableSelection();
-    }).dblclick(function() {
-        $(this).sortable({ disabled: true })
-               .enableSelection();
+    $("#sortable").on("taphold",function(){
+      $("#fireThougBubble").click();
+    //  $.mobile.navigate( "#thoughtBubble", { info: "info about the #bar hash" });
     });
 
 });
@@ -43,54 +40,54 @@ $(document).ready($(function() {
     });
 }));
 
-toolboxStorage = {};
-toolboxStorage.indexedDB = {};
+thoughtDeckStorage = {};
+thoughtDeckStorage.indexedDB = {};
 
-toolboxStorage.indexedDB.db = null;
+thoughtDeckStorage.indexedDB.db = null;
 
-toolboxStorage.indexedDB.open = function() {
+thoughtDeckStorage.indexedDB.open = function() {
     var version = 1;
-    var request = indexedDB.open("lessons", version);
+    var request = indexedDB.open("decks", version);
 
     // We can only create Object stores in a versionchange transaction.
     request.onupgradeneeded = function(e) {
         var db = e.target.result;
 
         // A versionchange transaction is started automatically.
-        e.target.transaction.onerror = toolboxStorage.indexedDB.onerror;
+        e.target.transaction.onerror = thoughtDeckStorage.indexedDB.onerror;
 
-        if (db.objectStoreNames.contains("lesson")) {
-            db.deleteObjectStore("lesson");
+        if (db.objectStoreNames.contains("deck")) {
+            db.deleteObjectStore("deck");
         }
 
-        var store = db.createObjectStore("lesson", {
+        var store = db.createObjectStore("deck", {
             keyPath : "name"
         });
     };
 
     request.onsuccess = function(e) {
-        toolboxStorage.indexedDB.db = e.target.result;
-        toolboxStorage.indexedDB.getAllLessonItems();
+        thoughtDeckStorage.indexedDB.db = e.target.result;
+        thoughtDeckStorage.indexedDB.getAllDeckItems();
     };
 
-    request.onerror = toolboxStorage.indexedDB.onerror;
+    request.onerror = thoughtDeckStorage.indexedDB.onerror;
 };
 
-toolboxStorage.indexedDB.addLesson = function(lessonText, tags, desc, notes) {
-    var db = toolboxStorage.indexedDB.db;
-    var trans = db.transaction(["lesson"], "readwrite");
-    var store = trans.objectStore("lesson");
+thoughtDeckStorage.indexedDB.addDeck = function(deckText, tags, desc, thoughts) {
+    var db = thoughtDeckStorage.indexedDB.db;
+    var trans = db.transaction(["deck"], "readwrite");
+    var store = trans.objectStore("deck");
     var request = store.put({
-        "name" : lessonText,
+        "name" : deckText,
         "tags" : tags,
         "desc" : desc,
-        "notes" : notes,
+        "thoughts" : thoughts,
         "timeStamp" : new Date().getTime()
     });
 
     request.onsuccess = function(e) {
-        // Re-render all the lesson's
-        toolboxStorage.indexedDB.getAllLessonItems();
+        // Re-render all the deck's
+        thoughtDeckStorage.indexedDB.getAllDeckItems();
     };
 
     request.onerror = function(e) {
@@ -98,13 +95,13 @@ toolboxStorage.indexedDB.addLesson = function(lessonText, tags, desc, notes) {
     };
 };
 
-toolboxStorage.indexedDB.getAllLessonItems = function() {
-    var lessons = document.getElementById("lessonList");
-    lessons.innerHTML = "";
+thoughtDeckStorage.indexedDB.getAllDeckItems = function() {
+    var decks = document.getElementById("deckList");
+    decks.innerHTML = "";
 
-    var db = toolboxStorage.indexedDB.db;
-    var trans = db.transaction(["lesson"], "readwrite");
-    var store = trans.objectStore("lesson");
+    var db = thoughtDeckStorage.indexedDB.db;
+    var trans = db.transaction(["deck"], "readwrite");
+    var store = trans.objectStore("deck");
 
     // Get everything in the store;
     var keyRange = IDBKeyRange.lowerBound(0);
@@ -115,67 +112,67 @@ toolboxStorage.indexedDB.getAllLessonItems = function() {
         if (!!result == false)
             return;
 
-        renderLesson(result.value);
+        renderDeck(result.value);
         result.continue();
     };
 
-    cursorRequest.onerror = toolboxStorage.indexedDB.onerror;
+    cursorRequest.onerror = thoughtDeckStorage.indexedDB.onerror;
 };
 
 
-toolboxStorage.indexedDB.getLessonItemsByName = function(name)  {
-    clearLesson();
-    var db = toolboxStorage.indexedDB.db;
-    var trans = db.transaction(["lesson"], "readwrite");
-    var store = trans.objectStore("lesson");
+thoughtDeckStorage.indexedDB.getDeckItemsByName = function(name)  {
+    clearDeck();
+    var db = thoughtDeckStorage.indexedDB.db;
+    var trans = db.transaction(["deck"], "readwrite");
+    var store = trans.objectStore("deck");
     var request = store.get(name);
     request.onerror = function(event) {
       // Handle errors!
     };
     request.onsuccess = function(event) {
       // Do something with the request.result!
-      var lesson = document.getElementById('lname');
+      var deck = document.getElementById('deckname');
       var tags = document.getElementById('tags');
       var desc = document.getElementById('desc'); 
 
-      var notes = [];
-      lesson.value = request.result.name;
+      var thoughts = [];
+      deck.innerHTML = request.result.name;
       tags.value = request.result.tags;
       desc.value = request.result.desc;
-      notes = JSON.parse(request.result.notes);
+      thoughts = JSON.parse(request.result.thoughts);
  
-      console.log('retrived notes:' + request.result.notes);
+      console.log('retrived thoughts:' + request.result.thoughts);
       
-      notes.forEach(function(entry) {
-        console.log('note:' + entry.noteText);
-        $('#sortable').append('<li id="' + entry.noteId + '" class="' + entry.liClasses + '"><div contenteditable id="note' + $cnt + '" class="' + entry.noteClasses + '">' + entry.noteText + '</div></li>');
-        $(".note-default").more({length: 80,
+      thoughts.forEach(function(entry) {
+        console.log('thought:' + entry.thoughtText);
+        $('#sortable').append('<li id="' + entry.thoughtId + '" class="' + entry.liClasses + '"><div id="thought' + $cnt + '" class="' + entry.thoughtClasses + '">' + entry.thoughtText + '</div></li>');
+        $(".thought-default").more({length: 80,
                                  moreText: '<span style="text-shadow:none;color:gray;">more</span>',
                                  lessText: '<span style="text-shadow:none;color:gray;">less</span>'});
         
       });
-      $.mobile.navigate( "#note-edit", { transition : "slide", info: "info about the #bar hash" });
+      $.mobile.navigate( "#thought-edit", { transition : "slide", info: "info about the #bar hash" });
     };
 };
 
 
 
-function renderLesson(row) {
-    var lessons = document.getElementById("lessonList");
+function renderDeck(row) {
+    var decks = document.getElementById("deckList");
     var li = document.createElement("li");
     var a = document.createElement("a");
     var a1 = document.createElement("a");
 
     var t = document.createTextNode("");
     t.data = row.name;
-    console.log(row.notes);
+    console.log(row.thoughts);
 
     a.addEventListener("click", function(e) {
-        toolboxStorage.indexedDB.deleteLesson(row.name);
+        thoughtDeckStorage.indexedDB.deleteDeck(row.name);
     });
     
     a1.addEventListener("click", function(e) {
-        toolboxStorage.indexedDB.getLessonItemsByName(row.name);
+        thoughtDeckStorage.indexedDB.getDeckItemsByName(row.name);
     });
  
 
@@ -183,18 +180,18 @@ function renderLesson(row) {
     a1.textContent = t.data;
     li.appendChild(a1);
     li.appendChild(a);
-    lessons.appendChild(li);
+    decks.appendChild(li);
 }
 
-toolboxStorage.indexedDB.deleteLesson = function(id) {
-    var db = toolboxStorage.indexedDB.db;
-    var trans = db.transaction(["lesson"], "readwrite");
-    var store = trans.objectStore("lesson");
+thoughtDeckStorage.indexedDB.deleteDeck = function(id) {
+    var db = thoughtDeckStorage.indexedDB.db;
+    var trans = db.transaction(["deck"], "readwrite");
+    var store = trans.objectStore("deck");
 
     var request = store.delete(id);
 
     request.onsuccess = function(e) {
-        toolboxStorage.indexedDB.getAllLessonItems();
+        thoughtDeckStorage.indexedDB.getAllDeckItems();
     };
 
     request.onerror = function(e) {
@@ -203,54 +200,54 @@ toolboxStorage.indexedDB.deleteLesson = function(id) {
 };
 
 function init() {
-    toolboxStorage.indexedDB.open();
+    thoughtDeckStorage.indexedDB.open();
     // open displays the data previously saved
 }
 
 window.addEventListener("DOMContentLoaded", init, false);
 
-function addLesson() {
-    var lesson = document.getElementById('lname');
+function addDeck() {
+    var deck = document.getElementById('deckname');
     var tags = document.getElementById('tags');
     var desc = document.getElementById('desc');        
     
-    if (lesson === null) {
-        alert("Specify Lesson Name");
+    if (deck === null) {
+        alert("Specify Deck Name");
         return;
     }
-    var arNotes = [];
-    $( ".note-default" ).each(function( index ) {
-        var obNote = {};  
+    var arThoughts = [];
+    $( ".thought-default" ).each(function( index ) {
+        var obThought = {};  
 
-        obNote.noteId = $( this ).attr('id');
-        obNote.noteText = $( this ).html();
-        obNote.noteClasses = $( this ).attr('class');
-        obNote.liClasses = $( this ).parent().attr('class');
+        obThought.thoughtId = $( this ).attr('id');
+        obThought.thoughtText = $( this ).html();
+        obThought.thoughtClasses = $( this ).attr('class');
+        obThought.liClasses = $( this ).parent().attr('class');
 
-        console.log('Adding:' + JSON.stringify(obNote));
+        console.log('Adding:' + JSON.stringify(obThought));
 
-        arNotes.push(obNote);
+        arThoughts.push(obThought);
 
     });
     
-    toolboxStorage.indexedDB.addLesson(lesson.value, tags.value, desc.value, JSON.stringify(arNotes));
+    thoughtDeckStorage.indexedDB.addDeck(deck.innerHTML, tags.value, desc.value, JSON.stringify(arThoughts));
     
-    clearLesson();
+    clearDeck();
 }
 
-function clearLesson() {
-    var lesson = document.getElementById('lname');
+function clearDeck() {
+    var deck = document.getElementById('deckname');
     var tags = document.getElementById('tags');
     var desc = document.getElementById('desc');    
  
     $('.li-default').remove();
 
-    lesson.value = '';
+    deck.innerHTML = 'Untitled';
     tags.value = '';
     desc.value = '';       
 }
 
-function newLesson() {
-    clearLesson();
-    $.mobile.navigate( "#note-edit", { transition : "slide", info: "info about the #bar hash" });
+function newDeck() {
+    clearDeck();
+    $.mobile.navigate( "#thought-edit", { transition : "slide", info: "info about the #bar hash" });
 }
