@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns   = "http://www.w3.org/ns/widgets"
+        xmlns:gap   = "http://phonegap.com/ns/1.0"
+        id          = "com.drjones.thoughtdeck"
+        versionCode = "10" 
+        version     = "1.0.0" >
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>Thought Deck</name>
+
+    <description>
+        Record your thoughts then organize them. 
+    </description>
+
+    <author href="https://drjonessoftware.com" email="support@drjones.com">
+       Dr. Jones Software
+    </author>
+	
+	<gap:splash src="splash.png" />
+</widget>

@@ -11,9 +11,14 @@
 		<script type="text/javascript" src="js/libs/jquery.more.package-2.0.0/jquery.plugin.min.js"></script> 
 		<script type="text/javascript" src="js/libs/jquery.more.package-2.0.0/jquery.more.min.js"></script>
  		<script src="js/libs/jquery.localstorage.js"></script>
+		<link rel="stylesheet" href="js/libs/owl.carousel/owl-carousel/owl.carousel.css">
+		<link rel="stylesheet" href="js/libs/owl.carousel/owl-carousel/owl.theme.css">
+		<script src="js/libs/owl.carousel/owl-carousel/owl.carousel.min.js"></script>
+		<script src="js/libs/handlebars-1.0.0.beta.6.js"></script>
+		<link href="css/main.css" rel="stylesheet">
+
 		<script src="js/script.js"></script>
 
-		<link href="css/main.css" rel="stylesheet">
 	</head>
 
 	<body>
@@ -21,8 +26,14 @@
 
 			<div data-role="main" class="ui-content" >
 				<div id="deckListholder">
-					<h3>Your Decks</h3>
-					<ul id="deckList"></ul>
+					<h2>Thought Decks</h3>
+					<div class="searchbox">
+						<input id="searchDecks" type="text" placeholder="search">
+					</div>
+					<BR><BR>
+					<div id="decklist" class="owl-carousel">
+					</div>
+
 				</div>
 			</div>
 			<div data-role="footer">
@@ -49,7 +60,7 @@
 							<textarea name="deck-description" id="desc" rows="10" placeholder="Description"></textarea>
 						</div>
 					</div>
-					<a href="#thoughtBubble" id="fireThougBubble" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all ui-icon-plus ui-btn-icon-left">Add Thought</a>
+					<a href="#thoughtBubble" id="fireThoughtBubble" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all ui-icon-plus ui-btn-icon-left">Add Thought</a>
 
 					<div data-role="popup" id="thoughtBubble" class="ui-content" style="min-width:250px;">
 						<div>
