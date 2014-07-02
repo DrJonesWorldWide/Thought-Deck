@@ -2,11 +2,11 @@
 
  */
 
-    $(document).bind("mobileinit", function () {
-        $.event.special.tap.tapholdThreshold = 1000,
-        $.event.special.swipe.durationThreshold = 999;
-        $.event.special.tap.emitTapOnTaphold = false;
-    });
+$(document).bind("mobileinit", function () {
+    $.event.special.tap.tapholdThreshold = 1000,
+    $.event.special.swipe.durationThreshold = 999;
+    $.event.special.tap.emitTapOnTaphold = false;
+});
     
 $("select:has(option[value=]:first-child)").on('change', function() {
     $(this).toggleClass("empty", $.inArray($(this).val(), ['', null]) >= 0);
