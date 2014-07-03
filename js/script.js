@@ -58,7 +58,7 @@ thoughtDeckStorage.indexedDB.db = null;
 
 thoughtDeckStorage.indexedDB.open = function() {
     var version = 1;
-    var request = indexedDB.open("decks", version);
+    var request = window.indexedDB.open("decks", version);
 
     // We can only create Object stores in a versionchange transaction.
     request.onupgradeneeded = function(e) {
