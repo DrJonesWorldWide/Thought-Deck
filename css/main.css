@@ -37,22 +37,36 @@
     border-width: 3px;
     border-style: solid;
     font-weight:bolder;
+    padding: 5px 0px 5px 0px;
 }
 
 .reg_imp {
-    margin-left: 10px;
+    margin-left: 20px;
     background-color:#D2E0E6;
     border-color: #CCCCCC;
     border-width: 2px;
     border-style: solid;
+    padding: 5px 0px 5px 0px;
 }
 
+
+
+.glow {
+    border-color: #000000;
+    background-color:#CCCCCC;
+    border-width: 3px;
+    border-style: solid;
+    font-weight:bolder;
+}
+
+
 .min_imp {
-    margin-left: 20px;
+    margin-left: 40px;
     background-color:#FFFFFF;
     border-color: #CCCCCC;
     border-width: 1px;
     border-style: dotted;
+    padding: 5px 0px 5px 0px;    
 }
 
 .general {
@@ -154,4 +168,4 @@ div#displayDecks {
     margin-bottom: auto;        
 }
 #sortable { list-style-type: none; margin: 0; padding: 0; width: 95%; }
-#sortable li { margin: 0 5px 5px 5px; padding: 5px; font: 14px/22px normal helvetica, sans-serif;}
+#sortable li { padding: 5px; font: 14px/22px normal helvetica, sans-serif;}
