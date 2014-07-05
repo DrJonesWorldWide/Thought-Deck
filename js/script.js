@@ -47,10 +47,10 @@ $(function() {
     });
 
 
-    $("#sortable").on("tap", tapHandler);
+    $("#sortable").on("taphold", tapholdHandler);
 
     // Callback function references the event target and adds the 'swiperight' class to it
-    function tapHandler(event, ui) {
+    function tapholdHandler(event, ui) {
         $('#thought_id').val($(event.target).attr('id'));
         $('#thought').html($(event.target).attr('fulltext'));
         $.mobile.changePage( "#thought-edit", { transition: "slide", changeHash: false });

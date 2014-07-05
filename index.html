@@ -20,14 +20,14 @@
 	</head>
 
 	<body>
-		
+
 		<div data-role="page" id="list-page" data-theme="a">
 
 			<div data-role="main" class="ui-content" >
 				<div id="deckListholder">
-					<div data-role="header"> 
-						<h2>Thought Decks</h2> 
-					</div> 
+					<div data-role="header">
+						<h2>Thought Decks</h2>
+					</div>
 					<div class="searchbox">
 						<input id="searchDecks" type="text" placeholder="search">
 					</div>
@@ -47,74 +47,75 @@
 			</div>
 		</div>
 
-			<div data-role="page" id="deck-edit" data-theme="a">
-				<div data-role="panel" id="pushPanel" data-display="push">
-							<a href="#descriptionPopup" data-rel="popup" class="ui-btn ui-icon-tag ui-btn-icon-left">Add Tag</a>
-						<div data-role="popup" id="descriptionPopup" class="ui-content" style="min-width:250px;">
-							<div>
-								<label for="tags" class="ui-hidden-accessible">Tag(s):</label>
-								<input type="text" name="tags" id="tags" placeholder="Search Tags">
-								<label for="desc" class="ui-hidden-accessible">Description:</label>
-								<textarea name="deck-description" id="desc" rows="10" placeholder="Description"></textarea>
-							</div>
-						</div>
-							<a href="#" id="addthought" class="ui-btn ui-icon-plus ui-btn-icon-left">Add Thought</a>
-							<a href="#" id="sorton" class="ui-btn ui-icon-arrow-d ui-btn-icon-left">Sort Thoughts</a>
-							<a href="#pageone" data-rel="close" class="ui-btn ui-icon-delete ui-btn-icon-left">Close panel</a>
-
+		<div data-role="page" id="deck-edit" data-theme="a">
+			<div data-role="panel" id="pushPanel" data-display="push">
+				
+				<div data-role="collapsible" data-collapsed-icon="tag" data-expanded-icon="tag">
+					<h3>Add Tags</h3>
+					<input type="text" name="tags" id="tags" placeholder="Search Tags">
+					<textarea name="deck-description" id="desc" rows="10" placeholder="Description"></textarea>
 				</div>
-				<div data-role="header">
-					<p style="margin-left:5px;">
-						<h3>
-						<div id="deckname" contenteditable="true">
-							Untitiled
-						</div></h3>
-					</p>
+				
+				<a href="#" id="addthought" class="ui-btn ui-icon-plus ui-btn-icon-left" style="text-align: left;">Add Thought</a>
+				<a href="#" id="sorton" class="ui-btn ui-icon-arrow-d ui-btn-icon-left" style="text-align: left;">Sort Thoughts</a>
+				<a href="#" id="mergethought" class="ui-btn ui-icon-plus ui-btn-icon-left" style="text-align: left;">Merge Thoughts</a>
+				<a href="#" id="deletethoughts" class="ui-btn ui-icon-delete ui-btn-icon-left" style="text-align: left;">Delete Thoughts</a>
+
+				<a href="#pageone" data-rel="close" class="ui-btn ui-icon-back ui-btn-icon-left" style="text-align: left;">Close panel</a>
+
+			</div>
+			<div data-role="header">
+				<p style="margin-left:5px;">
+					<h3>
+					<div id="deckname" contenteditable="true">
+						Untitiled Deck
+					</div></h3>
+				</p>
+				<div data-role="navbar">
+					<ul>
+						<li>
+							<a data-icon="edit" href="#pushPanel"></a>
+						</li>
+						<li>
+							<a href="#list-page" data-transition="slide" data-icon="bars"></a>
+						</li>
+						<li>
+							<a href="#" onclick="addDeck();" id="saveThoughts" data-icon="cloud"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div data-role="popup" id="noNamePopup">
+				<p>
+					Please specify Deck Name.
+				<p>
+			</div>
+			<div data-role="main" class="ui-content">
+				<div id="chalkboard">
+					<ul id="sortable"></ul>
+				</div>
+			</div>
+		</div>
+
+		<div data-role="page" id="thought-edit" data-theme="a">
+			<div data-role="main" class="ui-content" >
+				<input type="hidden" id="thought_id" name="thought_id">
+				<h3>What are you thinking?</h3>
+
+				<div class="thoughinput" name="deck-thought" id="thought" contenteditable="true"></div>
+				<div data-role="footer">
 					<div data-role="navbar">
 						<ul>
 							<li>
-								<a data-icon="edit" href="#pushPanel"></a>
+								<a data-icon="plus" class="newThoughtButton" href="#"></a>
 							</li>
 							<li>
-								<a href="#list-page" data-transition="slide" data-icon="bars"></a>
+								<a data-icon="delete" class="cancelThoughtButton" href="#"></a>
 							</li>
-							<li>
-								<a href="#" onclick="addDeck();" id="saveThoughts" data-icon="cloud"></a>
-							</li>
+
 						</ul>
 					</div>
 				</div>
-				<div data-role="popup" id="noNamePopup">
-					<p>
-						Please specify Deck Name.
-					<p>
-				</div>
-				<div data-role="main" class="ui-content">
-					<div id="chalkboard">
-						<ul id="sortable"></ul>
-					</div>
-				</div>
 			</div>
-
-			<div data-role="page" id="thought-edit" data-theme="a">
-				<div data-role="main" class="ui-content" >
-					<input type="hidden" id="thought_id" name="thought_id">
-					<h3>What are you thinking?</h3>
-
-					<div class="thoughinput" name="deck-thought" id="thought" contenteditable="true"></div>
-					<div data-role="footer">
-						<div data-role="navbar">
-							<ul>
-								<li>
-									<a data-icon="plus" class="newThoughtButton" href="#"></a>
-								</li>
-								<li>
-									<a data-icon="delete" class="cancelThoughtButton" href="#"></a>
-								</li>
-
-							</ul>
-						</div>
-					</div>
-				</div>
 	</body>
 </html>
