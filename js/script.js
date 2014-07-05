@@ -8,7 +8,9 @@ var $cnt = 1;
 $(document).ready($(function() {
     $('.newThoughtButton').on('click', function() {
         if($("#thought_id").val() != '') {
-            $('#' + $("#thought_id").val()).html($('#thought').html());
+            $('#' + $("#thought_id").val()).html(shorten($('#thought').html(),80));
+            $('#' + $("#thought_id").val()).attr('fulltext',$('#thought').html());
+
         } else {
             $cnt++;
             $('#sortable').append('<li class="li-default reg_imp"><div id="thought' + $cnt + '" fulltext="'+ $('#thought').html() + '" class="thought-default">' + shorten($('#thought').html(), 80) + '</div></li>');
@@ -22,6 +24,23 @@ $(document).ready($(function() {
         $('#thought').html("");
         $.mobile.changePage( "#deck-edit", { transition: "slideup", changeHash: false });
 
+    });
+
+    const limit = 140;
+    var rem = limit - $('#thought').html().length;
+    $("#thought").on('input', function () {
+        var char = $('#thought').html().length;
+        rem = limit - char;
+        if (rem < 40) {
+            $("#counter").html("Only have <strong>" + rem + "</strong> chars left, if you want to tweet this.");
+        }
+        console.log(char)
+        console.log(rem);
+        if(char>140)
+        {
+            $(".shareThoughtButton").remove();
+            $("#counter").html('"Brevity is the soul of wit." -Shakespeare :)');
+        }
     });
 
 }));
@@ -40,7 +59,7 @@ $(function() {
            $( "#pushPanel" ).panel( "close" );         
     });
 
-    $("#addthought").on('tap', function() {
+    $(".addthought").on('tap', function() {
         $('#thought_id').val('');
         $('#thought').html('');        
         $.mobile.changePage( "#thought-edit", { transition: "slide", changeHash: false });    

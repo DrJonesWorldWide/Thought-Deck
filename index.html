@@ -56,10 +56,10 @@
 					<textarea name="deck-description" id="desc" rows="10" placeholder="Description"></textarea>
 				</div>
 				
-				<a href="#" id="addthought" class="ui-btn ui-icon-plus ui-btn-icon-left" style="text-align: left;">Add Thought</a>
 				<a href="#" id="sorton" class="ui-btn ui-icon-arrow-d ui-btn-icon-left" style="text-align: left;">Sort Thoughts</a>
 				<a href="#" id="mergethought" class="ui-btn ui-icon-plus ui-btn-icon-left" style="text-align: left;">Merge Thoughts</a>
 				<a href="#" id="deletethoughts" class="ui-btn ui-icon-delete ui-btn-icon-left" style="text-align: left;">Delete Thoughts</a>
+				<a href="#list-page" data-transition="slide" class="ui-btn ui-icon-home ui-btn-icon-left" style="text-align: left;">Switch decks</a>
 
 				<a href="#pageone" data-rel="close" class="ui-btn ui-icon-back ui-btn-icon-left" style="text-align: left;">Close panel</a>
 
@@ -77,7 +77,7 @@
 							<a data-icon="edit" href="#pushPanel"></a>
 						</li>
 						<li>
-							<a href="#list-page" data-transition="slide" data-icon="bars"></a>
+							<a href="#" class="addthought" data-icon="plus"></a>
 						</li>
 						<li>
 							<a href="#" onclick="addDeck();" id="saveThoughts" data-icon="cloud"></a>
@@ -101,7 +101,7 @@
 			<div data-role="main" class="ui-content" >
 				<input type="hidden" id="thought_id" name="thought_id">
 				<h3>What are you thinking?</h3>
-
+				<div id="counter"></div>
 				<div class="thoughinput" name="deck-thought" id="thought" contenteditable="true"></div>
 				<div data-role="footer">
 					<div data-role="navbar">
@@ -110,9 +110,11 @@
 								<a data-icon="plus" class="newThoughtButton" href="#"></a>
 							</li>
 							<li>
+								<a data-icon="cloud" class="shareThoughtButton" href="#"></a>
+							</li>
+							<li>
 								<a data-icon="delete" class="cancelThoughtButton" href="#"></a>
 							</li>
-
 						</ul>
 					</div>
 				</div>

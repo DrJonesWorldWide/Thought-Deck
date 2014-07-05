@@ -72,9 +72,15 @@
 
 .glow {
     background-color:#CCCCCC;
+    border-color: #FFFFFF;
+    border-width: 1px;
+    border-style: solid;
+    padding: 0px 0px 0px 0px;    
+
 }
 
 .glow:hover {
+    background-color:#A1DEF8;
     outline: none;
     border-color: #9ecaed;
     box-shadow: 0 0 10px #9ecaed;
@@ -144,6 +150,11 @@ div#displayDecks {
     border-radius: 7px;
 }
 
+#counter {
+    color:#333333;
+    font-size:small;
+    padding:5px;
+}
 #decklist{
     margin-right: auto;
     margin-left: auto;
