@@ -21,6 +21,9 @@ thoughtDeckStorage.indexedDB.open = function() {
         var store = db.createObjectStore("deck", {
             keyPath : "name"
         });
+        
+        store.createIndex("lcname", "lcname", { unique: true });
+        store.createIndex("lcname", "lcname", { unique: true });
     };
 
     request.onsuccess = function(e) {
@@ -37,6 +40,7 @@ thoughtDeckStorage.indexedDB.addDeck = function(deckText, tags, desc, thoughts) 
     var store = trans.objectStore("deck");
     var request = store.put({
         "name" : deckText,
+        "lcname" : deckText.toLowerCase(),
         "tags" : tags,
         "desc" : desc,
         "thoughts" : thoughts,
@@ -101,17 +105,10 @@ thoughtDeckStorage.indexedDB.getDeckItemsByName = function(name) {
 
         thoughts.forEach(function(entry) {
             console.log('thought:' + entry.thoughtText);
-            $('#sortable').append('<li id="' + entry.thoughtId + '" class="' + entry.liClasses + '"><div id="thought' + $cnt + '" class="' + entry.thoughtClasses + '">' + entry.thoughtText + '</div></li>');
-            $(".thought-default").more({
-                length : 80,
-                moreText : '<span style="text-shadow:none;color:gray;">more</span>',
-                lessText : '<span style="text-shadow:none;color:gray;">less</span>'
-            });
-
+            $('#sortable').append('<li class="' + entry.liClasses + '"><div id="' + entry.thoughtId + '" fulltext="' + entry.thoughtText + '" class="' + entry.thoughtClasses + '">' + shorten(entry.thoughtText, 80) + '</div></li>');
         });
-        $.mobile.navigate("#thought-edit", {
-            transition : "slide",
-            info : "info about the #bar hash"
+        $.mobile.navigate("#deck-edit", {
+            transition : "slide"
         });
     };
 };
@@ -183,7 +180,7 @@ function addDeck() {
         var obThought = {};
 
         obThought.thoughtId = $(this).attr('id');
-        obThought.thoughtText = $(this).html();
+        obThought.thoughtText = $(this).attr('fulltext');
         obThought.thoughtClasses = $(this).attr('class');
         obThought.liClasses = $(this).parent().attr('class');
 
@@ -193,7 +190,48 @@ function addDeck() {
 
     });
 
-    thoughtDeckStorage.indexedDB.addDeck(deck.innerHTML, tags.value, desc.value, JSON.stringify(arThoughts));
+    thoughtDeckStorage.indexedDB.addDeck(deck.innerHTML, tags.value.split(" "), desc.value, JSON.stringify(arThoughts));
 
     clearDeck();
 }
+
+
+
+
+//Create the autocomplete
+$(function() {
+    $("#searchDecks").autocomplete({
+        source: function( request, response ) {
+            
+            console.log("Going to look for " + request.term);
+    
+            var db = thoughtDeckStorage.indexedDB.db;
+            var trans = db.transaction(["deck"], "readonly");
+            var store = trans.objectStore("deck");
+            var result = [];
+            trans.oncomplete = function(event) {
+                response(result);
+            };
+        
+            // Get everything in the store;
+            var keyRange = IDBKeyRange.bound(request.term.toLowerCase(), request.term.toLowerCase() + "z");
+            var index = store.index("lcname");
+            var cursorRequest = index.openCursor(keyRange);
+    
+            cursorRequest.onsuccess = function(e) {
+                var r = e.target.result;
+                if (!!r == false)
+                    return;
+        
+                result.push(r.value.name);
+                r.continue();
+            };
+    
+            cursorRequest.onerror = thoughtDeckStorage.indexedDB.onerror;     
+        },
+        minLength:2,
+        select:function(event,ui) {
+            alert('test');
+        }
+    });
+});

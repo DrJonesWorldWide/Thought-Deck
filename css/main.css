@@ -33,83 +33,69 @@
 
 .maj_imp {
     background-color:#ffb6c1;
-    border-color: white;
-    border-width: 3px;
+    border-color: #CCCCCC;
+    border-width: 1px;
     border-style: solid;
     font-weight:bolder;
-    padding: 5px 0px 5px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 .reg_imp {
-    margin-left: 20px;
     background-color:#D2E0E6;
     border-color: #CCCCCC;
-    border-width: 2px;
+    border-width: 1px;
     border-style: solid;
-    padding: 5px 0px 5px 0px;
+    padding: 0px 0px 0px 0px;
 }
 
 
-
-.glow {
-    border-color: #000000;
-    background-color:#CCCCCC;
-    border-width: 3px;
+.thoughinput {
+    background-color:#FFFFFF;
+    border-color: #CCCCCC;
+    border-width: 1px;
     border-style: solid;
-    font-weight:bolder;
+    padding: 0px 0px 0px 0px;
+    width:100%;
+    min-height: 200px;
+    max-height: 350px;
+    overflow: auto;    
 }
-
 
 .min_imp {
-    margin-left: 40px;
     background-color:#FFFFFF;
     border-color: #CCCCCC;
     border-width: 1px;
     border-style: dotted;
-    padding: 5px 0px 5px 0px;    
+    padding: 0px 0px 0px 0px;    
 }
 
-.general {
-  quotes: "\201C""\201D""\2018""\2019";
-  padding-left: 15px;
-  border-left: 3px solid #ccc;
-  font-weight:bold;
+
+.glow {
+    background-color:#CCCCCC;
 }
 
-.question {
-  quotes: "\201C""\201D""\2018""\2019";
-  padding-left: 15px;
-  border-left: 3px solid #ccc;
-  font-weight:bold;
-}
- 
-.question:before {
-  font-weight:bolder;
-  color: #ccc;
-  content: "?";
-  font-size: 2em;
-  line-height: 0.1em;
-  margin-right: 0.25em;
-  vertical-align: -0.3em;
+.glow:hover {
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
 }
 
-.quote {
-  font-family: "Times New Roman", Times, serif;
-  font-style: oblique;
+.thought-default {
   quotes: "\201C""\201D""\2018""\2019";
-  padding-left: 15px;
   border-left: 3px solid #ccc;
+  padding-left:10px;
 }
- 
-.quote:before {
-  color: #FFFFFF;
-  content: open-quote;
-  font-size: 4em;
-  line-height: 0.1em;
-  margin-right: 0.25em;
-  vertical-align: -0.4em;
-}
- 
+
+.min_imp>.thought-default {
+    margin-left: 45px;
+} 
+.reg_imp>.thought-default {
+    margin-left: 30px;
+} 
+.maj_imp>.thought-default {
+    margin-left: 15px;
+} 
+
 select option {
     color: black;
 }
@@ -132,9 +118,10 @@ html body{
 
 #chalkboard {
     overflow: auto;
+    width:100%;
 }
 .deckimage{
-background: #E0E0EB;
+  background: #E0E0EB;
   padding: 30px 0px;
   margin: 10px;
   color: #FFF;
@@ -157,15 +144,18 @@ div#displayDecks {
     border-radius: 7px;
 }
 
-#status {
-    font-style: italic;
-}
-
 #decklist{
     margin-right: auto;
     margin-left: auto;
     margin-top: auto;
     margin-bottom: auto;        
 }
-#sortable { list-style-type: none; margin: 0; padding: 0; width: 95%; }
-#sortable li { padding: 5px; font: 14px/22px normal helvetica, sans-serif;}
+#sortable { list-style-type: none; margin: 0; padding: 0px; width: 100%; }
+
+#sortable li { padding: 10px; font: 14px/22px normal helvetica, sans-serif;}
+
+
+
+.ui-autocomplete {
+  z-index: 10000000;
+}

@@ -1,99 +1,95 @@
-
 $(document).bind("mobileinit", function() {
-    $.event.special.tap.tapholdThreshold = 750;
+    $.event.special.tap.tapholdThreshold = 550;
     $.event.special.tap.emitTapOnTaphold = false;
 });
 
-$("select:has(option[value=]:first-child)").on('change', function() {
-    $(this).toggleClass("empty", $.inArray($(this).val(), ['', null]) >= 0);
-}).trigger('change');
 
 var $cnt = 1;
 $(document).ready($(function() {
     $('.newThoughtButton').on('click', function() {
-        $cnt++;
-        $('#sortable').append('<li id="li' + $cnt + '" class="li-default' + ' ' + $('#imp').val() + '"><div id="thought' + $cnt + '" class="thought-default ' + $('#ntype').val() + '">' + $('#thought').val() + '</div></li>');
-        $('#ntype').val("");
-        $('#imp').val("");
-        $('#thought').val("");
-        $(".thought-default").more({
-            length : 80,
-            moreText : '<span style="text-shadow:none;color:gray;">more</span>',
-            lessText : '<span style="text-shadow:none;color:gray;">less</span>'
-        });
+        if($("#thought_id").val() != '') {
+            $('#' + $("#thought_id").val()).html($('#thought').html());
+        } else {
+            $cnt++;
+            $('#sortable').append('<li class="li-default reg_imp"><div id="thought' + $cnt + '" fulltext="'+ $('#thought').html() + '" class="thought-default">' + shorten($('#thought').html(), 80) + '</div></li>');
+            $('#thought').html("");
+        }
+        $("#thought_id").val('');
+        $.mobile.changePage( "#deck-edit", { transition: "slideup", changeHash: false });
     });
-}));
 
+    $('.cancelThoughtButton').on('click', function() {
+        $('#thought').html("");
+        $.mobile.changePage( "#deck-edit", { transition: "slideup", changeHash: false });
+
+    });
+
+}));
 
 $(function() {
     $("#sortable").sortable();
     $("#sortable").sortable('disable');
     $("#sortable").disableSelection();
 
-/*
-    $(".thought-default").on("click", function() {
-        $('#thought_id').val($(this).attr("id"));
-        $('#thought').val($(this).attr("id"));
-        $("#fireThoughtBubble").click();
-    });
-*/ 
+    $('.ui-content').css('padding','0px');
 
-/*
-    $( "#sortable" ).bind( "sortstop", function(event, ui) {    
-        if (Math.abs(ui.offset.top - ui.originalPosition.top)>35){
-            $(this).sortable();
+
+    $("#sorton").on('tap', function() {
+           $('#sortable').sortable('enable');
+           $('.li-default').addClass("glow");
+           $( "#pushPanel" ).panel( "close" );         
+    });
+
+    $("#addthought").on('tap', function() {
+        $('#thought_id').val('');
+        $('#thought').html('');        
+        $.mobile.changePage( "#thought-edit", { transition: "slide", changeHash: false });    
+    });
+
+
+    $("#sortable").on("tap", tapHandler);
+
+    // Callback function references the event target and adds the 'swiperight' class to it
+    function tapHandler(event, ui) {
+        $('#thought_id').val($(event.target).attr('id'));
+        $('#thought').html($(event.target).attr('fulltext'));
+        $.mobile.changePage( "#thought-edit", { transition: "slide", changeHash: false });
+    }
+
+
+    $("#sortable").on("sortstop", function(event, ui) {
+        $('#sortable').sortable('disable');
+        $('.li-default').removeClass("glow");
+    });
+
+    // Bind the swiperightHandler callback function to the swipe event on div.box
+    $("#sortable").on("swiperight", swiperightHandler);
+
+    // Callback function references the event target and adds the 'swiperight' class to it
+    function swiperightHandler(event, ui) {
+        if ($(event.target).parent().hasClass("maj_imp")) {
+            $(event.target).parent().removeClass("maj_imp");
+            $(event.target).parent().addClass("reg_imp");
+        } else if ($(event.target).parent().hasClass("reg_imp")) {
+            $(event.target).parent().removeClass("reg_imp");
+            $(event.target).parent().addClass("min_imp");
         }
-    });
-*/   
-
-  $( "#sortable" ).on( "taphold", tapholdHandler );
- 
-  // Callback function references the event target and adds the 'swiperight' class to it
-  function tapholdHandler( event ){
-    $('#sortable').sortable('enable');
-    $( event.target ).parent().addClass( "glow" );
-  }
-
-
-  $( "#sortable" ).bind( "sortstop", function(event, ui) {    
-    $('#sortable').sortable('disable');
-    //alert(ui.item[0].attr("class"));
-    $('.li-default').removeClass( "glow" );
-  });
+    }
 
     // Bind the swiperightHandler callback function to the swipe event on div.box
-  $( "#sortable" ).on( "swiperight", swiperightHandler );
- 
-  // Callback function references the event target and adds the 'swiperight' class to it
-  function swiperightHandler( event, ui ){
-    if($( event.target ).parent().hasClass( "maj_imp" )) {
-        $( event.target ).parent().removeClass( "maj_imp" );
-        $( event.target ).parent().addClass( "reg_imp" );        
-    } else if($( event.target ).parent().hasClass( "reg_imp" )) {
-        $( event.target ).parent().removeClass( "reg_imp" );
-        $( event.target ).parent().addClass( "min_imp" );        
-        
+    $("#sortable").on("swipeleft", swipeleftHandler);
+
+    // Callback function references the event target and adds the 'swiperight' class to it
+    function swipeleftHandler(event, ui) {
+        if ($(event.target).parent().hasClass("min_imp")) {
+            $(event.target).parent().removeClass("min_imp");
+            $(event.target).parent().addClass("reg_imp");
+        } else if ($(event.target).parent().hasClass("reg_imp")) {
+            $(event.target).parent().removeClass("reg_imp");
+            $(event.target).parent().addClass("maj_imp");
+        }
     }
-  }
-
-    // Bind the swiperightHandler callback function to the swipe event on div.box
-  $( "#sortable" ).on( "swipeleft", swipeleftHandler );
- 
-  // Callback function references the event target and adds the 'swiperight' class to it
-  function swipeleftHandler( event, ui ){
-    if($( event.target ).parent().hasClass( "min_imp" )) {
-        $( event.target ).parent().removeClass("min_imp");
-        $( event.target ).parent().addClass( "reg_imp" );        
-    } else if($( event.target ).parent().hasClass("reg_imp")) {
-        $( event.target ).parent().removeClass( "reg_imp" );
-        $( event.target ).parent().addClass( "maj_imp" );        
-    }
-  }
-
-
 });
-
-
 
 function clearDeck() {
     var deck = document.getElementById('deckname');
@@ -109,9 +105,17 @@ function clearDeck() {
 
 function newDeck() {
     clearDeck();
-    $.mobile.navigate("#thought-edit", {
+    $.mobile.navigate("#deck-edit", {
         transition : "slide",
         info : "info about the #bar hash"
     });
 }
 
+function shorten(text, maxLength) {
+    var ret = text;
+    if (ret.length > maxLength) {
+        ret = ret.substr(0,maxLength-3) + "...";
+    }
+    return ret;
+}
+ 
